@@ -119,9 +119,9 @@ export default defineComponent({
 		};
 
 		//watchers
-        watch(SONG, () => {
-            setModelValue();
-        });
+    watch(SONG, () => {
+        setModelValue();
+    });
 
 		watchEffect(() => {
 			setModelValue();
