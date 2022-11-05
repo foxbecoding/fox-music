@@ -1,4 +1,7 @@
 backend/env-mymusic/Lib
+frontend/static/assets/artist_images
+frontend/static/assets/songs
+frontend/static/assets/song_thumbnails
 *.env
 # Created by .ignore support plugin (hsz.mobi)
 ### Node template
