@@ -1,5 +1,5 @@
 import colors from 'vuetify/es5/util/colors'
-const HOST = '192.168.1.235'
+const HOST = 'localhost'
 const DEFAULT_BASE_URL = `http://${HOST}:8000`
 
 export default {

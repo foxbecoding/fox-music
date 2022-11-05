@@ -27,17 +27,14 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     'localhost',
-    '192.168.1.235',
 ]
 CSRF_TRUSTED_ORIGINS = [
     'http://localhost:3000',
-    'http://192.168.1.235:3000',
 ]
 CORS_ALLOW_CREDENTIALS = True
 CORS_ORIGIN_ALLOW_ALL = False
 CORS_ORIGIN_WHITELIST = (
     'http://localhost:3000',
-    'http://192.168.1.235:3000',
 )
 
 
