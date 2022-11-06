@@ -6,7 +6,7 @@ import Song from '~/utils/types/Songs';
 const mutations: MutationTree<MusicPlayerState> = {
     audio(state: MusicPlayerState, audio_file: string): void{
       if(state.audio != null){
-        state.audio.pause()
+        state.audio.src = ""
         state.audio = null
       }
       state.audio = new Audio(audio_file)
