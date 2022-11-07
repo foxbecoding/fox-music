@@ -2,7 +2,7 @@
 	<div class="musicplayer-container">
         <layoutsMusicPlayerDesktop v-if="$vuetify.breakpoint.smAndUp" />
         <layoutsMusicPlayerMobile v-if="$vuetify.breakpoint.xsOnly" />
-    </div>
+  </div>
 </template>
 <script lang="ts">
 import Song from '~/utils/types/Songs';
@@ -13,12 +13,13 @@ import {
     defineComponent, 
     useRoute,
     useStore,
-    watch
+    watch,
 } from '@nuxtjs/composition-api';
 export default defineComponent({
 	setup() {   
         const route = useRoute();
         const store = useStore<MusicPlayerState>();
+
         //computed
         const AUDIO = computed(() => {
             return store.getters['MusicPlayer/audio']
@@ -31,20 +32,21 @@ export default defineComponent({
         );
 
         //watchers
-        watch(AUDIO, () => {
-            if(route.value.name == 'playing-_id'){ 
-                history.replaceState({urlPath: route.value.fullPath},"",`/playing/${SONG.value.uniqid}`)
-            }
+        watch(SONG, () => {
+            if(route.value.name === 'playing-_id'){ 
+                let path: string = route.value.fullPath
+                history.replaceState({urlPath: path},"",`/playing/${SONG.value.uniqid}`)
+            }          
             audioLoadedEvents();
             audioTimeUpdateEvents();
             audioEndedEvents();
-            setMediaSessionData();
+            setMediaSessionData();           
         });
 
         //methods
         const audioLoadedEvents = (): void => {
             AUDIO.value.addEventListener('loadeddata', () => {
-                if (AUDIO.value.readyState >= 1) {
+                if (AUDIO.value.readyState >= 4) {
                     store.commit('MusicPlayer/duration', AUDIO.value.duration);  
                 }   
             });
@@ -58,10 +60,16 @@ export default defineComponent({
 
         const audioTimeUpdateEvents = (): void => {
             AUDIO.value.addEventListener('timeupdate', () => {
-                if (IS_SLIDING.value == false){
+                if (IS_SLIDING.value === false){
                     store.commit('MusicPlayer/currentTime', AUDIO.value.currentTime);
                 }    
             })  
+        };
+
+        const removeEvtListeners = (): void => {
+            AUDIO.value.removeEventListener('loadeddata')
+            AUDIO.value.removeEventListener('ended')
+            AUDIO.value.removeEventListener('timeupdate')
         };
 
         const setMediaSessionData = (): void => {
@@ -86,11 +94,13 @@ export default defineComponent({
         };
 
         const songEnded = (): void => {
+            // removeEvtListeners()
             store.commit('MusicPlayer/isEnded', true as boolean);
             nextSong();
         };
     
         const nextSong = (): void => {
+            // removeEvtListeners()
             store.dispatch('MusicPlayer/nextSong')
         };
 
